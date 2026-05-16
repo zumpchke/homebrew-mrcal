@@ -47,9 +47,11 @@ class Mrcal < Formula
     ENV["CXX"] = Formula["gcc"].opt_bin/"g++-#{gcc_major}"
 
     # mrbuild reads CFLAGS/LDFLAGS rather than CPPFLAGS; keg-only deps need
-    # explicit paths
-    ENV.append "CFLAGS",  "-I#{buildpath}"
+    # explicit paths, and linked deps need HOMEBREW_PREFIX added since mrbuild
+    # won't see the standard CPPFLAGS
+    ENV.append "CFLAGS",  "-I#{HOMEBREW_PREFIX}/include"
     ENV.append "CFLAGS",  "-I#{Formula["suite-sparse"].opt_include}"
+    ENV.append "LDFLAGS", "-L#{HOMEBREW_PREFIX}/lib"
     ENV.append "LDFLAGS", "-L#{Formula["suite-sparse"].opt_lib}"
     ENV.append "LDFLAGS", "-L#{Formula["jpeg"].opt_lib}"
 
