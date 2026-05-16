@@ -56,6 +56,7 @@ class Mrcal < Formula
     # won't see the standard CPPFLAGS
     ENV.append "CFLAGS",  "-I#{HOMEBREW_PREFIX}/include"
     ENV.append "CFLAGS",  "-I#{Formula["suite-sparse"].opt_include}"
+    ENV.append "CFLAGS",  "-I#{Formula["jpeg"].opt_include}"
     ENV.append "LDFLAGS", "-L#{HOMEBREW_PREFIX}/lib"
     ENV.append "LDFLAGS", "-L#{Formula["suite-sparse"].opt_lib}"
     ENV.append "LDFLAGS", "-L#{Formula["jpeg"].opt_lib}"
