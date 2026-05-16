@@ -34,6 +34,11 @@ class Mrcal < Formula
     Formula["python@3.13"].opt_bin/"python3.13"
   end
 
+  # cv2.solvePnP works fine with 4 coplanar points (AprilTag corners).
+  # mrcal raised the minimum from 4 to 6 in Oct 2025 but that breaks
+  # single-tag calibration objects.
+  patch :DATA
+
   def install
     resource("mrbuild").stage { (buildpath/"mrbuild-1.16").install Dir["*"] }
     buildpath.install_symlink "mrbuild-1.16" => "mrbuild"
@@ -107,3 +112,17 @@ class Mrcal < Formula
     system python3, "-c", "import mrcal; mrcal.supported_lensmodels()"
   end
 end
+
+__END__
+diff --git a/mrcal/calibration.py b/mrcal/calibration.py
+--- a/mrcal/calibration.py
++++ b/mrcal/calibration.py
+@@ -563,8 +563,8 @@
+             (np.isfinite(observation_qxqy_pinhole[..., 1]))
+
+-        if np.count_nonzero(i) < 6:
+-            raise SolvePnPerror_toofew(f"Insufficient observations; need at least 6; got {np.count_nonzero(i)} instead. Cannot estimate initial extrinsics for {what}")
++        #if np.count_nonzero(i) < 6:
++        #    raise SolvePnPerror_toofew(f"Insufficient observations; need at least 6; got {np.count_nonzero(i)} instead. Cannot estimate initial extrinsics for {what}")
+
+         observations_local = observation_qxqy_pinhole[i]
