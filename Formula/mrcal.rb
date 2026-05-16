@@ -59,7 +59,7 @@ class Mrcal < Formula
     # Install numpysane to a build-time prefix so mrcal-genpywrap.py can import it
     numpysane_buildprefix = buildpath/"numpysane_build"
     resource("numpysane").stage do
-      system python3, *Language::Python.setup_install_args(numpysane_buildprefix, "python3.13")
+      system python3, "-m", "pip", "install", *std_pip_args(prefix: numpysane_buildprefix, build_isolation: false), "."
     end
     ENV.prepend_path "PYTHONPATH",
       numpysane_buildprefix/Language::Python.site_packages("python3.13")
@@ -87,7 +87,7 @@ class Mrcal < Formula
 
     # --- numpysane runtime install alongside mrcal ---
     resource("numpysane").stage do
-      system python3, *Language::Python.setup_install_args(prefix, "python3.13")
+      system python3, "-m", "pip", "install", *std_pip_args(build_isolation: false), "."
     end
 
     # --- Man pages ---
