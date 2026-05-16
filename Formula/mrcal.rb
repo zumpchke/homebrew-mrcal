@@ -54,6 +54,7 @@ class Mrcal < Formula
     # mrbuild reads CFLAGS/LDFLAGS rather than CPPFLAGS; keg-only deps need
     # explicit paths, and linked deps need HOMEBREW_PREFIX added since mrbuild
     # won't see the standard CPPFLAGS
+    ENV.append "CFLAGS",  "-I#{buildpath}"         # stb/stb_image.h lives here
     ENV.append "CFLAGS",  "-I#{HOMEBREW_PREFIX}/include"
     ENV.append "CFLAGS",  "-I#{Formula["suite-sparse"].opt_include}"
     ENV.append "CFLAGS",  "-I#{Formula["jpeg"].opt_include}"
