@@ -84,13 +84,15 @@ class Mrcal < Formula
     ]
 
     # --- Python extension package ---
-    site_packages = lib/Language::Python.site_packages("python3.13")
+    site_packages = prefix/Language::Python.site_packages("python3.13")
     (site_packages/"mrcal").install Dir["mrcal/*"]
 
-    # --- numpysane runtime install alongside mrcal ---
+    # --- numpysane: install to libexec to avoid conflicts with any
+    #     system-installed numpysane, exposed via a .pth file ---
     resource("numpysane").stage do
-      system python3, "-m", "pip", "install", *std_pip_args(build_isolation: false), "."
+      system python3, "-m", "pip", "install", *std_pip_args(prefix: libexec, build_isolation: false), "."
     end
+    (site_packages/"mrcal-numpysane.pth").write "#{libexec/Language::Python.site_packages("python3.13")}\n"
 
     # --- Man pages ---
     man1.install Dir["*.1"]
