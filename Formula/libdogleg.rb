@@ -2,7 +2,7 @@ class Libdogleg < Formula
   desc "Powell's dogleg nonlinear least squares with sparse Jacobians via CHOLMOD"
   homepage "https://github.com/dkogan/libdogleg"
   url "https://github.com/dkogan/libdogleg/archive/refs/tags/v0.18.tar.gz"
-  sha256 "TODO: run brew fetch Formula/libdogleg.rb to compute"
+  sha256 "d97ef0c149463f84e9bd40c8852da444605a38bac432b5b2774de3dd15180bab"
   license "LGPL-3.0-or-later"
 
   depends_on "gcc"

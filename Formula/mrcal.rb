@@ -2,7 +2,7 @@ class Mrcal < Formula
   desc "Calibration routines, camera models, and photogrammetry"
   homepage "https://mrcal.secretsauce.net/"
   url "https://github.com/dkogan/mrcal/archive/refs/tags/v2.5.2.tar.gz"
-  sha256 "TODO: run brew fetch Formula/mrcal.rb to compute"
+  sha256 "f0a8471fc5dc3bba3719c2f8aaf968d6fa074903575ef35ddbae33ad5ea1ccc1"
   license "Apache-2.0"
 
   depends_on "libdogleg" # from this tap
@@ -22,12 +22,12 @@ class Mrcal < Formula
   # stb is a single-header image library; no Homebrew formula exists.
   resource "stb" do
     url "https://raw.githubusercontent.com/nothings/stb/31c1ad37456438565541f4919958214b6e762fb4/stb_image.h"
-    sha256 "TODO: run brew fetch Formula/mrcal.rb to compute"
+    sha256 "594c2fe35d49488b4382dbfaec8f98366defca819d916ac95becf3e75f4200b3"
   end
 
   resource "numpysane" do
     url "https://files.pythonhosted.org/packages/source/n/numpysane/numpysane-0.42.tar.gz"
-    sha256 "TODO: run brew fetch Formula/mrcal.rb to compute"
+    sha256 "47f240cab2fd05a26776b91c0e07e03b1ebaf943005bcea0fc1585ded079b0bd"
   end
 
   def python3
