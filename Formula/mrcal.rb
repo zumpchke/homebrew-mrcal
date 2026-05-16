@@ -95,6 +95,10 @@ class Mrcal < Formula
     (site_packages/"mrcal-numpysane.pth").write "#{libexec/Language::Python.site_packages("python3.13")}\n"
 
     # --- Man pages ---
+    # Built on demand; mrcal must be importable so each script can run --help
+    man_targets = scripts.map { |f| "#{File.basename(f)}.1" }
+    ENV.prepend_path "PYTHONPATH", buildpath
+    system "make", "PYTHON_VERSION_FOR_EXTENSIONS=3.13", *man_targets
     man1.install Dir["*.1"]
   end
 
