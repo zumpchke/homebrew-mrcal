@@ -11,6 +11,8 @@ class Mrcal < Formula
   depends_on "libpng"
   depends_on "jpeg"
   depends_on "numpy"
+  depends_on "scipy"   # required by mrcal-calibrate-cameras (scipy.linalg)
+  depends_on "gnuplot" # runtime dep for mrcal-show-* visualization tools
   depends_on "python@3.13"
   depends_on "re2c" => :build
 
@@ -28,6 +30,13 @@ class Mrcal < Formula
   resource "numpysane" do
     url "https://files.pythonhosted.org/packages/source/n/numpysane/numpysane-0.42.tar.gz"
     sha256 "47f240cab2fd05a26776b91c0e07e03b1ebaf943005bcea0fc1585ded079b0bd"
+  end
+
+  # Pure-Python wrapper around gnuplot used by all mrcal-show-* tools.
+  # Not available as a Homebrew formula; bundled here.
+  resource "gnuplotlib" do
+    url "https://files.pythonhosted.org/packages/source/g/gnuplotlib/gnuplotlib-0.46.tar.gz"
+    sha256 "e713b73a64eb1a26af45870ee2de84c217e24d5a9f47365c6116afc315da6af4"
   end
 
   def python3
@@ -108,12 +117,22 @@ class Mrcal < Formula
     resource("numpysane").stage do
       system python3, "-m", "pip", "install", *std_pip_args(prefix: libexec, build_isolation: false), "."
     end
+
+    # --- gnuplotlib: needed by all mrcal-show-* visualization tools.
+    #     Installs into the same libexec site-packages as numpysane;
+    #     the .pth file below exposes both. ---
+    resource("gnuplotlib").stage do
+      system python3, "-m", "pip", "install", *std_pip_args(prefix: libexec, build_isolation: false), "."
+    end
+
     (site_packages/"mrcal-numpysane.pth").write "#{libexec/Language::Python.site_packages("python3.13")}\n"
   end
 
   test do
     system bin/"mrcal-calibrate-cameras", "--help"
     system python3, "-c", "import mrcal; mrcal.supported_lensmodels()"
+    # Sanity-check the runtime dependencies the bin tools actually use
+    system python3, "-c", "import scipy.linalg, gnuplotlib"
   end
 end
 
